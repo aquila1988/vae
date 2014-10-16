@@ -1,0 +1,62 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TabHost
+        android:id="@+id/tab_host"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/tab_widget_bg" />
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <!-- 隐藏 -->
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" >
+
+                <fragment
+                    android:id="@+id/fragment_news"
+                    android:name="com.jov.vae.frame.NewsFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <fragment
+                    android:id="@+id/fragment_funs"
+                    android:name="com.jov.vae.frame.FunsFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <fragment
+                    android:id="@+id/fragment_goods"
+                    android:name="com.jov.vae.frame.GoodsFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <fragment
+                    android:id="@+id/fragment_musics"
+                    android:name="com.jov.vae.frame.MusicsFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+
+</LinearLayout>
