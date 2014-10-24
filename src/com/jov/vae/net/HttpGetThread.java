@@ -1,6 +1,5 @@
 package com.jov.vae.net;
 
-
 import java.io.IOException;
 
 import org.apache.http.client.ClientProtocolException;
@@ -10,7 +9,7 @@ import android.os.Message;
 import android.util.Log;
 
 /**
- * ÍøÂçGetÇëÇóµÄÏß³Ì
+ * ç½‘ç»œGetè¯·æ±‚çš„çº¿ç¨‹
  * */
 public class HttpGetThread implements Runnable {
 
@@ -20,13 +19,13 @@ public class HttpGetThread implements Runnable {
 
 	public HttpGetThread(Handler hand, String res) {
 		this.hand = hand;
-		// Æ´½Ó·ÃÎÊ·şÎñÆ÷ÍêÕûµÄµØÖ·
+		// æ‹¼æ¥è®¿é—®æœåŠ¡å™¨å®Œæ•´çš„åœ°å€
 		url =  res;
 	}
 
 	@Override
 	public void run() {
-		// »ñÈ¡ÎÒÃÇ»Øµ÷Ö÷uiµÄmessage
+		// è·å–æˆ‘ä»¬å›è°ƒä¸»uiçš„message
 		Message msg = hand.obtainMessage();
 		Log.e("jov", url);
 		try {
@@ -38,7 +37,7 @@ public class HttpGetThread implements Runnable {
 		} catch (IOException e) {
 			msg.what = 100;
 		}
-		// ¸øÖ÷ui·¢ËÍÏûÏ¢´«µİÊı¾İ
+		// ç»™ä¸»uiå‘é€æ¶ˆæ¯ä¼ é€’æ•°æ®
 		hand.sendMessage(msg);
 	}
 }

@@ -41,14 +41,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:src="@drawable/nofound"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
                 <LinearLayout
-                    android:id="@+id/Item_ctn"
+                    android:id="@+id/item_uptime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -70,7 +70,7 @@
                     android:id="@+id/item_fav"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
+                    android:layout_marginLeft="8dp"
                     android:background="@drawable/btn_text_item_selector"
                     android:gravity="center"
                     android:layout_alignParentRight="true"
@@ -80,9 +80,31 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:paddingLeft="12dp"
-                        android:paddingRight="12dp"
+                        android:paddingLeft="6dp"
+                        android:paddingRight="6dp"
                         android:text="收藏"
+                        android:textColor="#815F3D"
+                        android:textSize="15sp" />
+                </LinearLayout>
+                 <LinearLayout
+                    android:id="@+id/item_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_toLeftOf="@+id/item_fav"
+                    android:layout_toRightOf="@+id/item_uptime"
+                    android:background="@drawable/btn_text_item_selector"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:visibility="gone" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingLeft="6dp"
+                        android:paddingRight="6dp"
+                        android:text="@string/more_btn"
                         android:textColor="#815F3D"
                         android:textSize="15sp" />
                 </LinearLayout>

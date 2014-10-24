@@ -7,13 +7,14 @@ import java.io.IOException;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
+import android.util.Log;
 
 /**
- * °ÑÍøÂçÍ¼Æ¬±£´æµ½±¾µØ 1.Ç¿ÒıÓÃ£¬Õı³£ÊµÀı»¯Ò»¸ö¶ÔÏó¡£ jvmÎŞÂÛÄÚ´æÊÇ·ñ¹»ÓÃÏµÍ³¶¼²»»áÊÍ·ÅÕâ¿éÄÚ´æ
- * 2.ÈíÒıÓÃ£¨softReference£©:µ±ÎÒÃÇÏµÍ³ÄÚ´æ²»¹»Ê±£¬»áÊÍ·Åµô 3.ÈõÒıÓÃ£ºµ±ÎÒÃÇÏµÍ³ÇåÀíÄÚ´æÊ±·¢ÏÖÊÇÒ»¸öÈõÒıÓÃ¶ÔÏó£¬Ö±½ÓÇåÀíµô
- * 4.ĞéÒıÓÃ£ºµ±ÎÒÃÇÇåÀíÄÚ´æÊ±»á °ÑĞéÒıÓÃ¶ÔÏó·ÅÈëÒ»¸öÇåÀí¶ÓÁĞµ±ÖĞ£¬ ÈÃÎÒÃÇ³ÌĞòÔ±±£´æµ±Ç°¶ÔÏóµÄ×´Ì¬
+ * æŠŠç½‘ç»œå›¾ç‰‡ä¿å­˜åˆ°æœ¬åœ° 1.å¼ºå¼•ç”¨ï¼Œæ­£å¸¸å®ä¾‹åŒ–ä¸€ä¸ªå¯¹è±¡ã€‚ jvmæ— è®ºå†…å­˜æ˜¯å¦å¤Ÿç”¨ç³»ç»Ÿéƒ½ä¸ä¼šé‡Šæ”¾è¿™å—å†…å­˜
+ * 2.è½¯å¼•ç”¨ï¼ˆsoftReferenceï¼‰:å½“æˆ‘ä»¬ç³»ç»Ÿå†…å­˜ä¸å¤Ÿæ—¶ï¼Œä¼šé‡Šæ”¾æ‰ 3.å¼±å¼•ç”¨ï¼šå½“æˆ‘ä»¬ç³»ç»Ÿæ¸…ç†å†…å­˜æ—¶å‘ç°æ˜¯ä¸€ä¸ªå¼±å¼•ç”¨å¯¹è±¡ï¼Œç›´æ¥æ¸…ç†æ‰
+ * 4.è™šå¼•ç”¨ï¼šå½“æˆ‘ä»¬æ¸…ç†å†…å­˜æ—¶ä¼š æŠŠè™šå¼•ç”¨å¯¹è±¡æ”¾å…¥ä¸€ä¸ªæ¸…ç†é˜Ÿåˆ—å½“ä¸­ï¼Œ è®©æˆ‘ä»¬ç¨‹åºå‘˜ä¿å­˜å½“å‰å¯¹è±¡çš„çŠ¶æ€
  * 
- * FileUtiles ×÷ÓÃ: ÓÃÀ´ÏòÎÒÃÇµÄsdcard±£´æÍøÂç½ÓÊÕÀ´µÄÍ¼Æ¬
+ * FileUtiles ä½œç”¨: ç”¨æ¥å‘æˆ‘ä»¬çš„sdcardä¿å­˜ç½‘ç»œæ¥æ”¶æ¥çš„å›¾ç‰‡
  * */
 public class FileUtiles {
 
@@ -23,42 +24,36 @@ public class FileUtiles {
 		this.ctx = ctx;
 	}
 
-	// »ñÈ¡ÊÖ»úÔÚsdcard±£´æÍ¼Æ¬µÄµØÖ·
 	public String getAbsolutePath() {
-		File root = ctx.getExternalFilesDir(null);
-		// ·µ»ØÊÖ»ú¶ËµÄ¾ø¶ÔÂ·¾¶£¬µ±ÎÒÃÇÈí¼şĞ¶ÔØ£¬ÒÔ¼°ÇåÀí»º´æÊ±»á±»ÇåÀíµô
+		/*File root = ctx.getExternalFilesDir(null);
 		if (root != null)
 			return root.getAbsolutePath();
-		return null;
+		return null;*/
+		String imageDir = Environment.getExternalStorageDirectory()
+				.getPath() + "/vae/images/";
+		return imageDir;
 	}
 
-	// ÅĞ¶ÏÍ¼Æ¬ÔÚ±¾µØ»º´æµ±ÖĞÊÇ·ñ´æÔÚ£¬Èç¹û´æÔÚ·µ»ØÒ»¸ötrue
 	public boolean isBitmap(String name) {
-		File root = ctx.getExternalFilesDir(null);
-		// fileµØÖ·Æ´½Ó
-		File file = new File(root, name);
+		//File root = ctx.getExternalFilesDir(null);
+		File file = new File(getAbsolutePath(), name);
 		return file.exists();
 	}
 
-	// Ìí¼Óµ½±¾µØ»º´æµ±ÖĞ
 	public void saveBitmap(String name, Bitmap bitmap) {
-		if (bitmap == null)
-			return;
-		// Èç¹ûsdcard²»ÄÜÊ¹ÓÃ
-		if (!Environment.getExternalStorageState().equals(
-				Environment.MEDIA_UNMOUNTED)) {
+		if (bitmap == null){
+			Log.v("unfiles=", name);
 			return;
 		}
-		// Æ´½ÓÍ¼Æ¬Òª±£´æµ½sd¿¨µÄµØÖ·
+		if (!android.os.Environment.MEDIA_MOUNTED.equals(android.os.Environment
+				.getExternalStorageState())) {
+			Log.v("unfilesdk=", name);
+			return;
+		}
 		String BitPath = getAbsolutePath() + "/" + name;
-		// mtn/sdcard/android/com.anjoyo.zhangxinyi/files/
 		try {
+			Log.v("files=", BitPath);
 			FileOutputStream fos = new FileOutputStream(BitPath);
-			/**
-			 * bitmap.compress°ÑÍ¼Æ¬Í¨¹ıÊä³öÁ÷±£´æµ½±¾µØ Bitmap.CompressFormat.JPEG ±£´æÍ¼Æ¬µÄ¸ñÊ½
-			 * 100 ±£´æµ½±¾µØµÄÍ¼Æ¬ÖÊÁ¿£¬ĞèÒªÑ¹ËõÊ±ÊÊµ±µ÷Õû´óĞ¡
-			 * 
-			 * */
 			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
 			fos.flush();
 			fos.close();
@@ -75,7 +70,7 @@ public class FileUtiles {
 		int lastSlashIndex = imageUrl.lastIndexOf("/");
 		String imageName = imageUrl.substring(lastSlashIndex + 1);
 		String imageDir = Environment.getExternalStorageDirectory()
-				.getPath() + "/funny/images/";
+				.getPath() + "/vae/images/";
 		File file = new File(imageDir);
 		if (!file.exists()) {
 			file.mkdirs();
@@ -86,14 +81,11 @@ public class FileUtiles {
 	public static File updateDir = null;
 	public static File updateFile = null;
 
-	/***
-	 * ´´½¨ÎÄ¼ş
-	 */
 	public static void createFile(String name) {
 		if (android.os.Environment.MEDIA_MOUNTED.equals(android.os.Environment
 				.getExternalStorageState())) {
 			updateDir = new File(Environment.getExternalStorageDirectory()
-					+ "/funny");
+					+ "/vae");
 			updateFile = new File(updateDir + "/" + name + ".apk");
 			if (!updateDir.exists()) {
 				updateDir.mkdirs();

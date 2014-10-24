@@ -2,8 +2,8 @@ package com.jov.vae.net;
 
 public class Common {
 
-	public static String HTTPURL = "http://joveth.github.io/funny/";
-	public static String QIMGURL = "http://joveth.github.io/funny/imgs";
+	public static String HTTPURL = "http://joveth.github.io/vae/";
+	public static String QIMGURL = "http://joveth.github.io/vae/imgs/";
 	public static boolean IMGFLAG = false;
 	public static boolean isEmpty(String str){
 		return str==null||str.trim().length()==0;

@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.widget.ImageView;
 
 /**
@@ -45,13 +46,14 @@ public class LoadImg {
 		// imageUrl 由于其唯一型，把他作为我们map当中的key
 		// 图片名称
 		final String filename = imageUrl.substring(
-				imageUrl.lastIndexOf("/") + 1, imageUrl.length());
+				imageUrl.lastIndexOf("/") + 1);
 		// 图片保存到本地时的地址
 		String filepath = fileUtiles.getAbsolutePath() + "/" + filename;
 		// 查找一级缓存，看看是否有这张图片
 		// 如果map当中有这个key返回一个true
 		if (imageCaches.containsKey(imageUrl)) {
 			// 找到对应图片软引用的封装
+			Log.v("I", "has");
 			SoftReference<Bitmap> soft = imageCaches.get(imageUrl);
 			// 从软引用当中获取图片
 			Bitmap bit = soft.get();
@@ -62,6 +64,7 @@ public class LoadImg {
 		// 从二级缓存当中获取图片
 		if (fileUtiles.isBitmap(filename)) {
 			Bitmap bit = BitmapFactory.decodeFile(filepath);
+			Log.v("II", "has");
 			// 在二级缓存读取的时候直接添加到一级缓存当中
 			imageCaches.put(imageUrl, new SoftReference<Bitmap>(bit));
 			return bit;
@@ -69,6 +72,7 @@ public class LoadImg {
 
 		// 一级缓存，二级缓存都不存在，直接到网络加载
 		if (imageUrl != null && !imageUrl.equals("")) {
+			Log.v("III", "has");
 			if (threadPools == null) {
 				// 实例化我们的线程池
 				threadPools = Executors.newFixedThreadPool(Max);
@@ -95,11 +99,11 @@ public class LoadImg {
 							.getInputStream(imageUrl);
 					// 图片压缩为原来的一半
 					BitmapFactory.Options op = new BitmapFactory.Options();
-					op.inSampleSize = 6;
+					op.inSampleSize = 1;
 					if(Common.IMGFLAG)
 						op.inSampleSize = 1;
 					Bitmap bit = BitmapFactory.decodeStream(inputStream, null,
-							op);
+							null);
 					if (bit != null) {
 						// 添加到一级缓存当中
 						imageCaches.put(imageUrl,

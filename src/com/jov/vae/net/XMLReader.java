@@ -1,14 +1,59 @@
 package com.jov.vae.net;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.xmlpull.v1.XmlPullParser;
 
 import android.util.Xml;
 
+import com.jov.vae.bean.TextBean;
 import com.jov.vae.bean.UpdateBean;
 
 public class XMLReader {
+	public List<TextBean> parseNews(InputStream is) throws Exception {
+		if (is == null) {
+			return null;
+		}
+		List<TextBean> list = null;
+		TextBean obj = null;
+		XmlPullParser parser = Xml.newPullParser();
+		parser.setInput(is, "UTF-8");
+		int eventType = parser.getEventType();
+		while (eventType != XmlPullParser.END_DOCUMENT) {
+			switch (eventType) {
+			case XmlPullParser.START_DOCUMENT:
+				list = new ArrayList<TextBean>();
+				break;
+			case XmlPullParser.START_TAG:
+				if (parser.getName().equals("item")) {
+					obj = new TextBean();
+				} else if (parser.getName().equals("content")) {
+					eventType = parser.next();
+					obj.setContent(parser.getText());
+				} else if (parser.getName().equals("image")) {
+					eventType = parser.next();
+					obj.setImgurl(parser.getText());
+				} else if (parser.getName().equals("onsite")) {
+					eventType = parser.next();
+					obj.setOnsite(parser.getText());
+				} else if (parser.getName().equals("uptime")) {
+					eventType = parser.next();
+					obj.setUptime(parser.getText());
+				}
+				break;
+			case XmlPullParser.END_TAG:
+				if (parser.getName().equals("item")) {
+					list.add(obj);
+					obj = null;
+				}
+				break;
+			}
+			eventType = parser.next();
+		}
+		return list;
+	}
 	/*public List<TextBean> parse(InputStream is) throws Exception {
 		if (is == null) {
 			return null;

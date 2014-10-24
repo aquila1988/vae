@@ -35,7 +35,7 @@ public class UpdateManager {
 	private Intent updateIntent;
 	private PendingIntent pendingIntent;
 	private int notification_id = 0;
-	private String uri = "http://joveth.github.io/funny/";
+	private String uri = "http://joveth.github.io/vae/";
 	private Context context;
 	private String version = "2";
 	private UpdateBean bean;

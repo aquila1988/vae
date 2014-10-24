@@ -4,7 +4,9 @@ public class TextBean {
 	private int tid;
 	private String imgurl;
 	private String content;
-
+	private String onsite;
+	private  String uptime;
+	
 	public int getTid() {
 		return tid;
 	}
@@ -29,4 +31,19 @@ public class TextBean {
 		this.content = content;
 	}
 
+	public String getOnsite() {
+		return onsite;
+	}
+
+	public void setOnsite(String onsite) {
+		this.onsite = onsite;
+	}
+
+	public String getUptime() {
+		return uptime;
+	}
+
+	public void setUptime(String uptime) {
+		this.uptime = uptime;
+	}
 }

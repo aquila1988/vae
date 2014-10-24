@@ -1,6 +1,5 @@
 package com.jov.vae.views;
 
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -22,10 +21,10 @@ import com.jov.vae.R;
 
 
 /**
- * ¸ÃÀàÖ÷ÒªÊÇÍê³É Í·²¿²¿·ÖµÄ¹¦ÄÜ·â×°
+ * è¯¥ç±»ä¸»è¦æ˜¯å®Œæˆ å¤´éƒ¨éƒ¨åˆ†çš„åŠŸèƒ½å°è£…
  * 
- * Ò»¸ö¿ÉÒÔ¼àÌıListViewÊÇ·ñ¹ö¶¯µ½×î¶¥²¿»ò×îµ×²¿µÄ×Ô¶¨Òå¿Ø¼ş
- * Ö»ÄÜ¼àÌıÓÉ´¥Ãş²úÉúµÄ£¬Èç¹ûÊÇListView±¾ÉíFlyingµ¼ÖÂµÄ£¬Ôò²»ÄÜ¼àÌı</br> Èç¹û¼ÓÒÔ¸Ä½ø£¬¿ÉÒÔÊµÏÖ¼àÌıscroll¹ö¶¯µÄ¾ßÌåÎ»ÖÃµÈ
+ * ä¸€ä¸ªå¯ä»¥ç›‘å¬ListViewæ˜¯å¦æ»šåŠ¨åˆ°æœ€é¡¶éƒ¨æˆ–æœ€åº•éƒ¨çš„è‡ªå®šä¹‰æ§ä»¶
+ * åªèƒ½ç›‘å¬ç”±è§¦æ‘¸äº§ç”Ÿçš„ï¼Œå¦‚æœæ˜¯ListViewæœ¬èº«Flyingå¯¼è‡´çš„ï¼Œåˆ™ä¸èƒ½ç›‘å¬</br> å¦‚æœåŠ ä»¥æ”¹è¿›ï¼Œå¯ä»¥å®ç°ç›‘å¬scrollæ»šåŠ¨çš„å…·ä½“ä½ç½®ç­‰
  * 
  */
 
@@ -37,46 +36,46 @@ public class ScrollOverListView extends ListView implements OnScrollListener {
 
 	private static final String TAG = "listview";
 
-	/**ËÉ¿ª¸üĞÂ**/
+	/**æ¾å¼€æ›´æ–°**/
 	private final static int RELEASE_To_REFRESH = 0;
-	/**ÏÂÀ­¸üĞÂ**/
+	/**ä¸‹æ‹‰æ›´æ–°**/
 	private final static int PULL_To_REFRESH = 1;
-	/**¸üĞÂÖĞ**/
+	/**æ›´æ–°ä¸­**/
 	private final static int REFRESHING = 2;
-	/**ÎŞ**/
+	/**æ— **/
 	private final static int DONE = 3;
-	/**¼ÓÔØÖĞ**/
+	/**åŠ è½½ä¸­**/
 	private final static int LOADING = 4;
-	/**Êµ¼ÊµÄpaddingµÄ¾àÀëÓë½çÃæÉÏÆ«ÒÆ¾àÀëµÄ±ÈÀı**/
+	/**å®é™…çš„paddingçš„è·ç¦»ä¸ç•Œé¢ä¸Šåç§»è·ç¦»çš„æ¯”ä¾‹**/
 	private final static int RATIO = 3;
 	
 	private LayoutInflater inflater;
-	/**Í·²¿Ë¢ĞÂµÄ²¼¾Ö**/
+	/**å¤´éƒ¨åˆ·æ–°çš„å¸ƒå±€**/
 	private LinearLayout headView;
-	/**Í·²¿ÏÔÊ¾ÏÂÀ­Ë¢ĞÂµÈµÄ¿Ø¼ş**/
+	/**å¤´éƒ¨æ˜¾ç¤ºä¸‹æ‹‰åˆ·æ–°ç­‰çš„æ§ä»¶**/
 	private TextView tipsTextview;
-	/**Ë¢ĞÂ¿Ø¼ş**/
-	/**¼ıÍ·Í¼±ê**/
+	/**åˆ·æ–°æ§ä»¶**/
+	/**ç®­å¤´å›¾æ ‡**/
 	private ImageView arrowImageView;
-	/**Í·²¿¹ö¶¯Ìõ**/
+	/**å¤´éƒ¨æ»šåŠ¨æ¡**/
 	private ProgressBar progressBar;
-	/**ÏÔÊ¾¶¯»­**/
+	/**æ˜¾ç¤ºåŠ¨ç”»**/
 	private RotateAnimation animation;
-	/**Í·²¿»ØÍËÏÔÊ¾¶¯»­**/
+	/**å¤´éƒ¨å›é€€æ˜¾ç¤ºåŠ¨ç”»**/
 	private RotateAnimation reverseAnimation;
-	/** ÓÃÓÚ±£Ö¤startYµÄÖµÔÚÒ»¸öÍêÕûµÄtouchÊÂ¼şÖĞÖ»±»¼ÇÂ¼Ò»´Î**/
+	/** ç”¨äºä¿è¯startYçš„å€¼åœ¨ä¸€ä¸ªå®Œæ•´çš„touchäº‹ä»¶ä¸­åªè¢«è®°å½•ä¸€æ¬¡**/
 	private boolean isRecored;
-	/**Í·²¿¸ß¶È**/
+	/**å¤´éƒ¨é«˜åº¦**/
 	private int headContentHeight;
-	/**¿ªÊ¼µÄY×ø±ê**/
+	/**å¼€å§‹çš„Yåæ ‡**/
 	private int startY;
-	/**µÚÒ»¸öitem**/
+	/**ç¬¬ä¸€ä¸ªitem**/
 	private int firstItemIndex;
-	/**×´Ì¬**/
+	/**çŠ¶æ€**/
 	private int state;
 	
 	private boolean isBack;
-	/**ÊÇ·ñÒªÊ¹ÓÃÏÂÀ­Ë¢ĞÂ¹¦ÄÜ**/
+	/**æ˜¯å¦è¦ä½¿ç”¨ä¸‹æ‹‰åˆ·æ–°åŠŸèƒ½**/
 	public boolean showRefresh = true;
 
 	public static boolean canRefleash = true;
@@ -96,7 +95,7 @@ public class ScrollOverListView extends ListView implements OnScrollListener {
 		init(context);
 	}
 
-	/**³öÊÂ»¯¿Ø¼ş**/
+	/**å‡ºäº‹åŒ–æ§ä»¶**/
 	private void init(Context context) {
 		mBottomPosition = 0;
 		setCacheColorHint(0);
@@ -119,7 +118,7 @@ public class ScrollOverListView extends ListView implements OnScrollListener {
 		headView.setPadding(0, -1 * headContentHeight, 0, 0);
 		headView.invalidate();
 
-		/**ÁĞ±íÌí¼ÓÍ·²¿**/
+		/**åˆ—è¡¨æ·»åŠ å¤´éƒ¨**/
 		addHeaderView(headView, null, false);
 
 		setOnScrollListener(this);
@@ -143,7 +142,7 @@ public class ScrollOverListView extends ListView implements OnScrollListener {
 		state = DONE;
 	}
 
-	/**´¥ÃşÊÂ¼şµÄ´¦Àí**/
+	/**è§¦æ‘¸äº‹ä»¶çš„å¤„ç†**/
 	@Override
 	public boolean onTouchEvent(MotionEvent ev) {
 
@@ -151,7 +150,7 @@ public class ScrollOverListView extends ListView implements OnScrollListener {
 		final int y = (int) ev.getRawY();
 		cancelLongPress();
 		switch (action) {
-		case MotionEvent.ACTION_DOWN: {  //°´ÏÂµÄÊ±ºò
+		case MotionEvent.ACTION_DOWN: {  //æŒ‰ä¸‹çš„æ—¶å€™
 			if (firstItemIndex == 0 && !isRecored) {
 				isRecored = true;
 				startY = (int) ev.getY();
@@ -166,7 +165,7 @@ public class ScrollOverListView extends ListView implements OnScrollListener {
 			break;
 		}
 
-		case MotionEvent.ACTION_MOVE: {   //ÊÖÖ¸ÕıÔÚÒÆ¶¯µÄÊ±ºò
+		case MotionEvent.ACTION_MOVE: {   //æ‰‹æŒ‡æ­£åœ¨ç§»åŠ¨çš„æ—¶å€™
 			int tempY = (int) ev.getY();
 			if (showRefresh) {
 				
@@ -176,44 +175,44 @@ public class ScrollOverListView extends ListView implements OnScrollListener {
 				}
 				if (state != REFRESHING && isRecored && state != LOADING) {
 
-					// ±£Ö¤ÔÚÉèÖÃpaddingµÄ¹ı³ÌÖĞ£¬µ±Ç°µÄÎ»ÖÃÒ»Ö±ÊÇÔÚhead£¬·ñÔòÈç¹ûµ±ÁĞ±í³¬³öÆÁÄ»µÄ»°£¬µ±ÔÚÉÏÍÆµÄÊ±ºò£¬ÁĞ±í»áÍ¬Ê±½øĞĞ¹ö¶¯
+					// ä¿è¯åœ¨è®¾ç½®paddingçš„è¿‡ç¨‹ä¸­ï¼Œå½“å‰çš„ä½ç½®ä¸€ç›´æ˜¯åœ¨headï¼Œå¦åˆ™å¦‚æœå½“åˆ—è¡¨è¶…å‡ºå±å¹•çš„è¯ï¼Œå½“åœ¨ä¸Šæ¨çš„æ—¶å€™ï¼Œåˆ—è¡¨ä¼šåŒæ—¶è¿›è¡Œæ»šåŠ¨
 
-					// ¿ÉÒÔËÉÊÖÈ¥Ë¢ĞÂÁË
+					// å¯ä»¥æ¾æ‰‹å»åˆ·æ–°äº†
 					if (state == RELEASE_To_REFRESH) {
 
 						setSelection(0);
 
-						// ÍùÉÏÍÆÁË£¬ÍÆµ½ÁËÆÁÄ»×ã¹»ÑÚ¸ÇheadµÄ³Ì¶È£¬µ«ÊÇ»¹Ã»ÓĞÍÆµ½È«²¿ÑÚ¸ÇµÄµØ²½
+						// å¾€ä¸Šæ¨äº†ï¼Œæ¨åˆ°äº†å±å¹•è¶³å¤Ÿæ©ç›–headçš„ç¨‹åº¦ï¼Œä½†æ˜¯è¿˜æ²¡æœ‰æ¨åˆ°å…¨éƒ¨æ©ç›–çš„åœ°æ­¥
 						if (((tempY - startY) / RATIO < headContentHeight)
 								&& (tempY - startY) > 0) {
 							state = PULL_To_REFRESH;
 							changeHeaderViewByState();
 
 						}
-						// Ò»ÏÂ×ÓÍÆµ½¶¥ÁË
+						// ä¸€ä¸‹å­æ¨åˆ°é¡¶äº†
 						else if (tempY - startY <= 0) {
 							state = DONE;
 							changeHeaderViewByState();
 
 						}
-						// ÍùÏÂÀ­ÁË£¬»òÕß»¹Ã»ÓĞÉÏÍÆµ½ÆÁÄ»¶¥²¿ÑÚ¸ÇheadµÄµØ²½
+						// å¾€ä¸‹æ‹‰äº†ï¼Œæˆ–è€…è¿˜æ²¡æœ‰ä¸Šæ¨åˆ°å±å¹•é¡¶éƒ¨æ©ç›–headçš„åœ°æ­¥
 						else {
-							// ²»ÓÃ½øĞĞÌØ±ğµÄ²Ù×÷£¬Ö»ÓÃ¸üĞÂpaddingTopµÄÖµ¾ÍĞĞÁË
+							// ä¸ç”¨è¿›è¡Œç‰¹åˆ«çš„æ“ä½œï¼Œåªç”¨æ›´æ–°paddingTopçš„å€¼å°±è¡Œäº†
 						}
 					}
-					// »¹Ã»ÓĞµ½´ïÏÔÊ¾ËÉ¿ªË¢ĞÂµÄÊ±ºò,DONE»òÕßÊÇPULL_To_REFRESH×´Ì¬
+					// è¿˜æ²¡æœ‰åˆ°è¾¾æ˜¾ç¤ºæ¾å¼€åˆ·æ–°çš„æ—¶å€™,DONEæˆ–è€…æ˜¯PULL_To_REFRESHçŠ¶æ€
 					if (state == PULL_To_REFRESH) {
 
 						setSelection(0);
 
-						// ÏÂÀ­µ½¿ÉÒÔ½øÈëRELEASE_TO_REFRESHµÄ×´Ì¬
+						// ä¸‹æ‹‰åˆ°å¯ä»¥è¿›å…¥RELEASE_TO_REFRESHçš„çŠ¶æ€
 						if ((tempY - startY) / RATIO >= headContentHeight) {
 							state = RELEASE_To_REFRESH;
 							isBack = true;
 							changeHeaderViewByState();
 
 						}
-						// ÉÏÍÆµ½¶¥ÁË
+						// ä¸Šæ¨åˆ°é¡¶äº†
 						else if (tempY - startY <= 0) {
 							state = DONE;
 							changeHeaderViewByState();
@@ -221,7 +220,7 @@ public class ScrollOverListView extends ListView implements OnScrollListener {
 						}
 					}
 
-					// done×´Ì¬ÏÂ
+					// doneçŠ¶æ€ä¸‹
 					if (state == DONE) {
 						if (tempY - startY > 0) {
 							state = PULL_To_REFRESH;
@@ -229,13 +228,13 @@ public class ScrollOverListView extends ListView implements OnScrollListener {
 						}
 					}
 
-					// ¸üĞÂheadViewµÄsize
+					// æ›´æ–°headViewçš„size
 					if (state == PULL_To_REFRESH) {
 						headView.setPadding(0, -1 * headContentHeight
 								+ (tempY - startY) / RATIO, 0, 0);
 					}
 
-					// ¸üĞÂheadViewµÄpaddingTop
+					// æ›´æ–°headViewçš„paddingTop
 					if (state == RELEASE_To_REFRESH) {
 						headView.setPadding(0, (tempY - startY) / RATIO
 								- headContentHeight, 0, 0);
@@ -262,7 +261,7 @@ public class ScrollOverListView extends ListView implements OnScrollListener {
 				return true;
 			}
 
-			/** µ½´ïµ×²¿ *  µ½´ïµ×²¿µÄÊÂ¼şÔÚÁíÍâÒ»¸öÀàÖ´ĞĞ**/
+			/** åˆ°è¾¾åº•éƒ¨ *  åˆ°è¾¾åº•éƒ¨çš„äº‹ä»¶åœ¨å¦å¤–ä¸€ä¸ªç±»æ‰§è¡Œ**/
 			if (firstVisiblePosition + childCount >= itemCount
 					&& lastBottom <= end && deltaY < 0) {
 				final boolean isHandleOnListViewBottomAndPullDown;
@@ -276,10 +275,10 @@ public class ScrollOverListView extends ListView implements OnScrollListener {
 			break;
 		}
 
-		case MotionEvent.ACTION_UP: {   //ÊÖÖ¸Ì§ÆğÀ´µÄÊ±ºò
+		case MotionEvent.ACTION_UP: {   //æ‰‹æŒ‡æŠ¬èµ·æ¥çš„æ—¶å€™
 			if (state != REFRESHING && state != LOADING) {
 				if (state == DONE) {
-					// Ê²Ã´¶¼²»×ö
+					// ä»€ä¹ˆéƒ½ä¸åš
 				}
 				if (state == PULL_To_REFRESH) {
 					state = DONE;
@@ -318,7 +317,7 @@ public class ScrollOverListView extends ListView implements OnScrollListener {
 	
 	
 
-	/** ¿ÕµÄ */
+	/** ç©ºçš„ */
 	private OnScrollOverListener mOnScrollOverListener = new OnScrollOverListener() {
 
 		@Override
@@ -350,9 +349,9 @@ public class ScrollOverListView extends ListView implements OnScrollListener {
 
 	// =============================== public method
 	/**
-	 * ¿ÉÒÔ×Ô¶¨ÒåÆäÖĞÒ»¸öÌõÄ¿ÎªÍ·²¿£¬Í·²¿´¥·¢µÄÊÂ¼ş½«ÒÔÕâ¸öÎª×¼£¬Ä¬ÈÏÎªµÚÒ»¸ö
+	 * å¯ä»¥è‡ªå®šä¹‰å…¶ä¸­ä¸€ä¸ªæ¡ç›®ä¸ºå¤´éƒ¨ï¼Œå¤´éƒ¨è§¦å‘çš„äº‹ä»¶å°†ä»¥è¿™ä¸ªä¸ºå‡†ï¼Œé»˜è®¤ä¸ºç¬¬ä¸€ä¸ª
 	 * 
-	 * @param index  ÕıÊıµÚ¼¸¸ö£¬±ØĞëÔÚÌõÄ¿Êı·¶Î§Ö®ÄÚ
+	 * @param index  æ­£æ•°ç¬¬å‡ ä¸ªï¼Œå¿…é¡»åœ¨æ¡ç›®æ•°èŒƒå›´ä¹‹å†…
 	 */
 	public void setTopPosition(int index) {
 		if (getAdapter() == null)
@@ -363,9 +362,9 @@ public class ScrollOverListView extends ListView implements OnScrollListener {
 	}
 
 	/**
-	 * ¿ÉÒÔ×Ô¶¨ÒåÆäÖĞÒ»¸öÌõÄ¿ÎªÎ²²¿£¬Î²²¿´¥·¢µÄÊÂ¼ş½«ÒÔÕâ¸öÎª×¼£¬Ä¬ÈÏÎª×îºóÒ»¸ö
+	 * å¯ä»¥è‡ªå®šä¹‰å…¶ä¸­ä¸€ä¸ªæ¡ç›®ä¸ºå°¾éƒ¨ï¼Œå°¾éƒ¨è§¦å‘çš„äº‹ä»¶å°†ä»¥è¿™ä¸ªä¸ºå‡†ï¼Œé»˜è®¤ä¸ºæœ€åä¸€ä¸ª
 	 * 
-	 * @param index  µ¹ÊıµÚ¼¸¸ö£¬±ØĞëÔÚÌõÄ¿Êı·¶Î§Ö®ÄÚ
+	 * @param index  å€’æ•°ç¬¬å‡ ä¸ªï¼Œå¿…é¡»åœ¨æ¡ç›®æ•°èŒƒå›´ä¹‹å†…
 	 */
 	public void setBottomPosition(int index) {
 		if (getAdapter() == null)
@@ -378,7 +377,7 @@ public class ScrollOverListView extends ListView implements OnScrollListener {
 	}
 
 	/**
-	 * ÉèÖÃÕâ¸öListener¿ÉÒÔ¼àÌıÊÇ·ñµ½´ï¶¥¶Ë£¬»òÕßÊÇ·ñµ½´ïµÍ¶ËµÈÊÂ¼ş</br>
+	 * è®¾ç½®è¿™ä¸ªListenerå¯ä»¥ç›‘å¬æ˜¯å¦åˆ°è¾¾é¡¶ç«¯ï¼Œæˆ–è€…æ˜¯å¦åˆ°è¾¾ä½ç«¯ç­‰äº‹ä»¶</br>
 	 * 
 	 * @see OnScrollOverListener
 	 */
@@ -388,50 +387,50 @@ public class ScrollOverListView extends ListView implements OnScrollListener {
 	}
 
 	/**
-	 * ¹ö¶¯¼àÌı½Ó¿Ú
+	 * æ»šåŠ¨ç›‘å¬æ¥å£
 	 * 
 	 * @see ScrollOverListView#setOnScrollOverListener(OnScrollOverListener)
 	 * 
 	 */
 	public interface OnScrollOverListener {
 		/**
-		 * µ½´ï×î¶¥²¿´¥·¢
+		 * åˆ°è¾¾æœ€é¡¶éƒ¨è§¦å‘
 		 * 
 		 * @param delta
-		 *            ÊÖÖ¸µã»÷ÒÆ¶¯²úÉúµÄÆ«ÒÆÁ¿
+		 *            æ‰‹æŒ‡ç‚¹å‡»ç§»åŠ¨äº§ç”Ÿçš„åç§»é‡
 		 * @return
 		 */
 		boolean onListViewTopAndPullDown(int delta);
 
 		/**
-		 * µ½´ï×îµ×²¿´¥·¢
+		 * åˆ°è¾¾æœ€åº•éƒ¨è§¦å‘
 		 * 
 		 * @param delta
-		 *            ÊÖÖ¸µã»÷ÒÆ¶¯²úÉúµÄÆ«ÒÆÁ¿
+		 *            æ‰‹æŒ‡ç‚¹å‡»ç§»åŠ¨äº§ç”Ÿçš„åç§»é‡
 		 * @return
 		 */
 		boolean onListViewBottomAndPullUp(int delta);
 
 		/**
-		 * ÊÖÖ¸´¥Ãş°´ÏÂ´¥·¢£¬Ïàµ±ÓÚ{@link MotionEvent#ACTION_DOWN}
+		 * æ‰‹æŒ‡è§¦æ‘¸æŒ‰ä¸‹è§¦å‘ï¼Œç›¸å½“äº{@link MotionEvent#ACTION_DOWN}
 		 * 
-		 * @return ·µ»Øtrue±íÊ¾×Ô¼º´¦Àí
+		 * @return è¿”å›trueè¡¨ç¤ºè‡ªå·±å¤„ç†
 		 * @see View#onTouchEvent(MotionEvent)
 		 */
 		boolean onMotionDown(MotionEvent ev);
 
 		/**
-		 * ÊÖÖ¸´¥ÃşÒÆ¶¯´¥·¢£¬Ïàµ±ÓÚ{@link MotionEvent#ACTION_MOVE}
+		 * æ‰‹æŒ‡è§¦æ‘¸ç§»åŠ¨è§¦å‘ï¼Œç›¸å½“äº{@link MotionEvent#ACTION_MOVE}
 		 * 
-		 * @return ·µ»Øtrue±íÊ¾×Ô¼º´¦Àí
+		 * @return è¿”å›trueè¡¨ç¤ºè‡ªå·±å¤„ç†
 		 * @see View#onTouchEvent(MotionEvent)
 		 */
 		boolean onMotionMove(MotionEvent ev, int delta);
 
 		/**
-		 * ÊÖÖ¸´¥ÃşºóÌáÆğ´¥·¢£¬Ïàµ±ÓÚ{@link MotionEvent#ACTION_UP}
+		 * æ‰‹æŒ‡è§¦æ‘¸åæèµ·è§¦å‘ï¼Œç›¸å½“äº{@link MotionEvent#ACTION_UP}
 		 * 
-		 * @return ·µ»Øtrue±íÊ¾×Ô¼º´¦Àí
+		 * @return è¿”å›trueè¡¨ç¤ºè‡ªå·±å¤„ç†
 		 * @see View#onTouchEvent(MotionEvent)
 		 */
 		boolean onMotionUp(MotionEvent ev);
@@ -451,7 +450,7 @@ public class ScrollOverListView extends ListView implements OnScrollListener {
 
 	}
 
-	// ´Ë·½·¨Ö±½ÓÕÕ°á×ÔÍøÂçÉÏµÄÒ»¸öÏÂÀ­Ë¢ĞÂµÄdemo£¬´Ë´¦ÊÇ¡°¹À¼Æ¡±headViewµÄwidthÒÔ¼°height
+	// æ­¤æ–¹æ³•ç›´æ¥ç…§æ¬è‡ªç½‘ç»œä¸Šçš„ä¸€ä¸ªä¸‹æ‹‰åˆ·æ–°çš„demoï¼Œæ­¤å¤„æ˜¯â€œä¼°è®¡â€headViewçš„widthä»¥åŠheight
 	private void measureView(View child) {
 		ViewGroup.LayoutParams p = child.getLayoutParams();
 		if (p == null) {
@@ -476,7 +475,7 @@ public class ScrollOverListView extends ListView implements OnScrollListener {
 		changeHeaderViewByState();
 	}
 
-	// µ±×´Ì¬¸Ä±äÊ±ºò£¬µ÷ÓÃ¸Ã·½·¨£¬ÒÔ¸üĞÂ½çÃæ
+	// å½“çŠ¶æ€æ”¹å˜æ—¶å€™ï¼Œè°ƒç”¨è¯¥æ–¹æ³•ï¼Œä»¥æ›´æ–°ç•Œé¢
 	private void changeHeaderViewByState() {
 		switch (state) {
 		case RELEASE_To_REFRESH:
@@ -486,22 +485,22 @@ public class ScrollOverListView extends ListView implements OnScrollListener {
 
 			arrowImageView.clearAnimation();
 			arrowImageView.startAnimation(animation);
-			tipsTextview.setText("ÊÍ·ÅÁ¢¼´Ë¢ĞÂ");
+			tipsTextview.setText("é‡Šæ”¾ç«‹å³åˆ·æ–°");
 			break;
 		case PULL_To_REFRESH:
 			progressBar.setVisibility(View.GONE);
 			tipsTextview.setVisibility(View.VISIBLE);
 			arrowImageView.clearAnimation();
 			arrowImageView.setVisibility(View.VISIBLE);
-			// ÊÇÓÉRELEASE_To_REFRESH×´Ì¬×ª±äÀ´µÄ
+			// æ˜¯ç”±RELEASE_To_REFRESHçŠ¶æ€è½¬å˜æ¥çš„
 			if (isBack) {
 				isBack = false;
 				arrowImageView.clearAnimation();
 				arrowImageView.startAnimation(reverseAnimation);
 
-				tipsTextview.setText("ÏÂÀ­Ë¢ĞÂ");
+				tipsTextview.setText("ä¸‹æ‹‰åˆ·æ–°");
 			} else {
-				tipsTextview.setText("ÏÂÀ­Ë¢ĞÂ");
+				tipsTextview.setText("ä¸‹æ‹‰åˆ·æ–°");
 			}
 			break;
 
@@ -511,14 +510,14 @@ public class ScrollOverListView extends ListView implements OnScrollListener {
 			progressBar.setVisibility(View.VISIBLE);
 			arrowImageView.clearAnimation();
 			arrowImageView.setVisibility(View.GONE);
-			tipsTextview.setText("ÕıÔÚË¢ĞÂ...");
+			tipsTextview.setText("æ­£åœ¨åˆ·æ–°...");
 			break;
 		case DONE:
 			headView.setPadding(0, -1 * headContentHeight, 0, 0);
 			progressBar.setVisibility(View.GONE);
 			arrowImageView.clearAnimation();
 			arrowImageView.setImageResource(R.drawable.era);
-			tipsTextview.setText("ÏÂÀ­Ë¢ĞÂ");
+			tipsTextview.setText("ä¸‹æ‹‰åˆ·æ–°");
 			break;
 		}
 	}

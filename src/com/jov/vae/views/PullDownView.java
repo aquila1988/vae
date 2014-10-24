@@ -1,5 +1,4 @@
 package com.jov.vae.views;
-
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
@@ -21,29 +20,29 @@ import com.jov.vae.views.ScrollOverListView.OnScrollOverListener;
 
 
 /**
- * @function ÏÂÀ­Ë¢ĞÂ¿Ø¼ş   ÕæÕıÊµÏÖÏÂÀ­Ë¢ĞÂµÄÊÇÕâ¸ö¿Ø¼ş£¬ ScrollOverListViewÖ»ÊÇÌá¹©´¥ÃşµÄÊÂ¼şµÈ
+ * @function ä¸‹æ‹‰åˆ·æ–°æ§ä»¶   çœŸæ­£å®ç°ä¸‹æ‹‰åˆ·æ–°çš„æ˜¯è¿™ä¸ªæ§ä»¶ï¼Œ ScrollOverListViewåªæ˜¯æä¾›è§¦æ‘¸çš„äº‹ä»¶ç­‰
  * @version 1.0
  */
 
 public class PullDownView extends LinearLayout implements OnScrollOverListener {
 
-	private static final int START_PULL_DEVIATION = 50; // ÒÆ¶¯Îó²î
-	private static final int WHAT_DID_MORE = 5; // Handler what ÒÑ¾­»ñÈ¡Íê¸ü¶à
-	private static final int WHAT_DID_REFRESH = 3; // Handler what ÒÑ¾­Ë¢ĞÂÍê
-	/**µ×²¿¸ü¶àµÄ°´¼ü**/
+	private static final int START_PULL_DEVIATION = 50; // ç§»åŠ¨è¯¯å·®
+	private static final int WHAT_DID_MORE = 5; // Handler what å·²ç»è·å–å®Œæ›´å¤š
+	private static final int WHAT_DID_REFRESH = 3; // Handler what å·²ç»åˆ·æ–°å®Œ
+	/**åº•éƒ¨æ›´å¤šçš„æŒ‰é”®**/
 	private RelativeLayout mFooterView;
-	/**µ×²¿¸ü¶àµÄ°´¼ü**/
+	/**åº•éƒ¨æ›´å¤šçš„æŒ‰é”®**/
 	private TextView mFooterTextView;
-	/**µ×²¿¸ü¶àµÄ°´¼ü**/
+	/**åº•éƒ¨æ›´å¤šçš„æŒ‰é”®**/
 	private ProgressBar mFooterLoadingView;
-	/**ÒÑ¾­º¬ÓĞ ÏÂÀ­Ë¢ĞÂ¹¦ÄÜµÄÁĞ±í**/
+	/**å·²ç»å«æœ‰ ä¸‹æ‹‰åˆ·æ–°åŠŸèƒ½çš„åˆ—è¡¨**/
 	private ScrollOverListView mListView;
-	/**Ë¢ĞÂºÍ¸ü¶àµÄÊÂ¼ş½Ó¿Ú**/
+	/**åˆ·æ–°å’Œæ›´å¤šçš„äº‹ä»¶æ¥å£**/
 	private OnPullDownListener mOnPullDownListener;
-	private float mMotionDownLastY; // °´ÏÂÊ±ºòµÄYÖá×ø±ê
-	private boolean mIsFetchMoreing; // ÊÇ·ñ»ñÈ¡¸ü¶àÖĞ
-	private boolean mIsPullUpDone; // ÊÇ·ñ»ØÍÆÍê³É
-	private boolean mEnableAutoFetchMore; // ÊÇ·ñÔÊĞí×Ô¶¯»ñÈ¡¸ü¶à
+	private float mMotionDownLastY; // æŒ‰ä¸‹æ—¶å€™çš„Yè½´åæ ‡
+	private boolean mIsFetchMoreing; // æ˜¯å¦è·å–æ›´å¤šä¸­
+	private boolean mIsPullUpDone; // æ˜¯å¦å›æ¨å®Œæˆ
+	private boolean mEnableAutoFetchMore; // æ˜¯å¦å…è®¸è‡ªåŠ¨è·å–æ›´å¤š
 
 	public PullDownView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -56,34 +55,34 @@ public class PullDownView extends LinearLayout implements OnScrollOverListener {
 	}
 
 	/*
-	 * ================================== Public method Íâ²¿Ê¹ÓÃ£¬¾ßÌå¾ÍÊÇÓÃÕâ¼¸¸ö¾Í¿ÉÒÔÁË
+	 * ================================== Public method å¤–éƒ¨ä½¿ç”¨ï¼Œå…·ä½“å°±æ˜¯ç”¨è¿™å‡ ä¸ªå°±å¯ä»¥äº†
 	 */
 
 	/**
-	 * Ë¢ĞÂºÍ»ñÈ¡¸ü¶àÊÂ¼ş½Ó¿Ú
+	 * åˆ·æ–°å’Œè·å–æ›´å¤šäº‹ä»¶æ¥å£
 	 */
 	public interface OnPullDownListener {
-		/**Ë¢ĞÂÊÂ¼ş½Ó¿Ú  ÕâÀïÒª×¢ÒâµÄÊÇ»ñÈ¡¸ü¶àÍê Òª¹Ø±Õ Ë¢ĞÂµÄ½ø¶ÈÌõRefreshComplete()**/
+		/**åˆ·æ–°äº‹ä»¶æ¥å£  è¿™é‡Œè¦æ³¨æ„çš„æ˜¯è·å–æ›´å¤šå®Œ è¦å…³é—­ åˆ·æ–°çš„è¿›åº¦æ¡RefreshComplete()**/
 		void onRefresh();
-		/**Ë¢ĞÂÊÂ¼ş½Ó¿Ú  ÕâÀïÒª×¢ÒâµÄÊÇ»ñÈ¡¸ü¶àÍê Òª¹Ø±Õ ¸ü¶àµÄ½ø¶ÈÌõ notifyDidMore()**/
+		/**åˆ·æ–°äº‹ä»¶æ¥å£  è¿™é‡Œè¦æ³¨æ„çš„æ˜¯è·å–æ›´å¤šå®Œ è¦å…³é—­ æ›´å¤šçš„è¿›åº¦æ¡ notifyDidMore()**/
 		void onMore();
 	}
 
 	/**
-	 * Í¨ÖªÒÑ¾­»ñÈ¡Íê¸ü¶àÁË£¬Òª·ÅÔÚAdapter.notifyDataSetChangedºóÃæ
-	 * µ±ÄãÖ´ĞĞÍê¸ü¶àÈÎÎñÖ®ºó£¬µ÷ÓÃÕâ¸önotyfyDidMore() ²Å»áÒş²Ø¼ÓÔØÈ¦µÈ²Ù×÷
+	 * é€šçŸ¥å·²ç»è·å–å®Œæ›´å¤šäº†ï¼Œè¦æ”¾åœ¨Adapter.notifyDataSetChangedåé¢
+	 * å½“ä½ æ‰§è¡Œå®Œæ›´å¤šä»»åŠ¡ä¹‹åï¼Œè°ƒç”¨è¿™ä¸ªnotyfyDidMore() æ‰ä¼šéšè—åŠ è½½åœˆç­‰æ“ä½œ
 	 */
 	public void notifyDidMore() {
 		mUIHandler.sendEmptyMessage(WHAT_DID_MORE);
 	}
 
-	/** Ë¢ĞÂÍê±Ï ¹Ø±ÕÍ·²¿¹ö¶¯Ìõ **/
+	/** åˆ·æ–°å®Œæ¯• å…³é—­å¤´éƒ¨æ»šåŠ¨æ¡ **/
 	public void RefreshComplete() {
 		mUIHandler.sendEmptyMessage(WHAT_DID_REFRESH);
 	}
 
 	/**
-	 * ÉèÖÃ¼àÌıÆ÷
+	 * è®¾ç½®ç›‘å¬å™¨
 	 * 
 	 * @param listener
 	 */
@@ -92,7 +91,7 @@ public class PullDownView extends LinearLayout implements OnScrollOverListener {
 	}
 
 	/**
-	 * »ñÈ¡ÄÚÇ¶µÄlistview
+	 * è·å–å†…åµŒçš„listview
 	 * 
 	 * @return ScrollOverListView
 	 */
@@ -101,36 +100,36 @@ public class PullDownView extends LinearLayout implements OnScrollOverListener {
 	}
 
 	/**
-	 * ÊÇ·ñ¿ªÆô×Ô¶¯»ñÈ¡¸ü¶à ×Ô¶¯»ñÈ¡¸ü¶à£¬½«»áÒş²Øfooter£¬²¢ÔÚµ½´ïµ×²¿µÄÊ±ºò×Ô¶¯Ë¢ĞÂ
+	 * æ˜¯å¦å¼€å¯è‡ªåŠ¨è·å–æ›´å¤š è‡ªåŠ¨è·å–æ›´å¤šï¼Œå°†ä¼šéšè—footerï¼Œå¹¶åœ¨åˆ°è¾¾åº•éƒ¨çš„æ—¶å€™è‡ªåŠ¨åˆ·æ–°
 	 * 
 	 * @param index
-	 *            µ¹ÊıµÚ¼¸¸ö´¥·¢
+	 *            å€’æ•°ç¬¬å‡ ä¸ªè§¦å‘
 	 */
 	public void enableAutoFetchMore(boolean enable, int index) {
 		if (enable) {
 			mListView.setBottomPosition(index);
 			//mFooterLoadingView.setVisibility(View.VISIBLE);
 		} else {
-			mFooterTextView.setText("µã»÷¼ÓÔØ¸ü¶à");//²»×Ô¶¯¼ÓÔØ
+			mFooterTextView.setText("ç‚¹å‡»åŠ è½½æ›´å¤š");//ä¸è‡ªåŠ¨åŠ è½½
 			mFooterLoadingView.setVisibility(View.GONE);
 		}
 		mEnableAutoFetchMore = enable;
 	}
 
 	/*
-	 * ================================== Private method ¾ßÌåÊµÏÖÏÂÀ­Ë¢ĞÂµÈ²Ù×÷
+	 * ================================== Private method å…·ä½“å®ç°ä¸‹æ‹‰åˆ·æ–°ç­‰æ“ä½œ
 	 * 
 	 * ==================================
 	 */
 
 	/**
-	 * ³õÊ¼»¯½çÃæ
+	 * åˆå§‹åŒ–ç•Œé¢
 	 */
 	private void initHeaderViewAndFooterViewAndListView(Context context) {
 		setOrientation(LinearLayout.VERTICAL);
 
 		/**
-		 * ×Ô¶¨Òå½Å²¿ÎÄ¼ş
+		 * è‡ªå®šä¹‰è„šéƒ¨æ–‡ä»¶
 		 */
 		mFooterView = (RelativeLayout) LayoutInflater.from(context).inflate(
 				R.layout.pulldown_footer, null);
@@ -144,7 +143,7 @@ public class PullDownView extends LinearLayout implements OnScrollOverListener {
 				if (!mIsFetchMoreing) {
 
 					mIsFetchMoreing = true;
-					mFooterTextView.setText("¼ÓÔØ¸ü¶àÖĞ...");
+					mFooterTextView.setText("åŠ è½½æ›´å¤šä¸­...");
 					mFooterLoadingView.setVisibility(View.VISIBLE);
 					mOnPullDownListener.onMore();
 				}
@@ -152,7 +151,7 @@ public class PullDownView extends LinearLayout implements OnScrollOverListener {
 		});
 
 		/*
-		 * ScrollOverListView Í¬ÑùÊÇ¿¼ÂÇµ½¶¼ÊÇÊ¹ÓÃ£¬ËùÒÔ·ÅÔÚÕâÀï Í¬Ê±ÒòÎª£¬ĞèÒªËüµÄ¼àÌıÊÂ¼ş
+		 * ScrollOverListView åŒæ ·æ˜¯è€ƒè™‘åˆ°éƒ½æ˜¯ä½¿ç”¨ï¼Œæ‰€ä»¥æ”¾åœ¨è¿™é‡Œ åŒæ—¶å› ä¸ºï¼Œéœ€è¦å®ƒçš„ç›‘å¬äº‹ä»¶
 		 */
 		mListView = new ScrollOverListView(context);
 		mListView.setDivider(null);
@@ -160,7 +159,7 @@ public class PullDownView extends LinearLayout implements OnScrollOverListener {
 		mListView.setCacheColorHint(0);
 		addView(mListView, LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 
-		// ¿ÕµÄlistener
+		// ç©ºçš„listener
 		mOnPullDownListener = new OnPullDownListener() {
 			@Override
 			public void onRefresh() {
@@ -188,7 +187,7 @@ public class PullDownView extends LinearLayout implements OnScrollOverListener {
 
 			case WHAT_DID_MORE: {
 				mIsFetchMoreing = false;
-				mFooterTextView.setText("¸ü¶à");
+				mFooterTextView.setText("æ›´å¤š");
 				mFooterLoadingView.setVisibility(View.GONE);
 			}
 			}
@@ -198,7 +197,7 @@ public class PullDownView extends LinearLayout implements OnScrollOverListener {
 
 
 	/**
-	 * ÌõÄ¿ÊÇ·ñÌîÂúÕû¸öÆÁÄ»
+	 * æ¡ç›®æ˜¯å¦å¡«æ»¡æ•´ä¸ªå±å¹•
 	 */
 	private boolean isFillScreenItem() {
 		final int firstVisiblePosition = mListView.getFirstVisiblePosition();
@@ -215,7 +214,7 @@ public class PullDownView extends LinearLayout implements OnScrollOverListener {
 	}
 
 	/*
-	 * ================================== ÊµÏÖ OnScrollOverListener½Ó¿Ú
+	 * ================================== å®ç° OnScrollOverListeneræ¥å£
 	 */
 
 	@Override
@@ -228,10 +227,10 @@ public class PullDownView extends LinearLayout implements OnScrollOverListener {
 	public boolean onListViewBottomAndPullUp(int delta) {
 		if (!mEnableAutoFetchMore || mIsFetchMoreing)
 			return false;
-		// ÊıÁ¿³äÂúÆÁÄ»²Å´¥·¢
+		// æ•°é‡å……æ»¡å±å¹•æ‰è§¦å‘
 		if (isFillScreenItem()) {
 			mIsFetchMoreing = true;
-			mFooterTextView.setText("¼ÓÔØ¸ü¶àÖĞ...");
+			mFooterTextView.setText("åŠ è½½æ›´å¤šä¸­...");
 			mFooterLoadingView.setVisibility(View.VISIBLE);
 			mOnPullDownListener.onMore();
 			return true;
@@ -249,11 +248,11 @@ public class PullDownView extends LinearLayout implements OnScrollOverListener {
 
 	@Override
 	public boolean onMotionMove(MotionEvent ev, int delta) {
-		// µ±Í·²¿ÎÄ¼ş»ØÍÆÏûÊ§µÄÊ±ºò£¬²»ÔÊĞí¹ö¶¯
+		// å½“å¤´éƒ¨æ–‡ä»¶å›æ¨æ¶ˆå¤±çš„æ—¶å€™ï¼Œä¸å…è®¸æ»šåŠ¨
 		if (mIsPullUpDone)
 			return true;
 
-		// Èç¹û¿ªÊ¼°´ÏÂµ½»¬¶¯¾àÀë²»³¬¹ıÎó²îÖµ£¬Ôò²»»¬¶¯
+		// å¦‚æœå¼€å§‹æŒ‰ä¸‹åˆ°æ»‘åŠ¨è·ç¦»ä¸è¶…è¿‡è¯¯å·®å€¼ï¼Œåˆ™ä¸æ»‘åŠ¨
 		final int absMotionY = (int) Math.abs(ev.getRawY() - mMotionDownLastY);
 		if (absMotionY < START_PULL_DEVIATION)
 			return true;
@@ -270,17 +269,17 @@ public class PullDownView extends LinearLayout implements OnScrollOverListener {
 		return false;
 	}
 
-	/**Òş²ØÍ·²¿ ½ûÓÃÏÂÀ­¸üĞÂ**/
+	/**éšè—å¤´éƒ¨ ç¦ç”¨ä¸‹æ‹‰æ›´æ–°**/
 	public void setHideHeader() {
 		mListView.showRefresh = false;
 	}
 
-	/**ÏÔÊ¾Í·²¿ Ê¹ÓÃÏÂÀ­¸üĞÂ**/
+	/**æ˜¾ç¤ºå¤´éƒ¨ ä½¿ç”¨ä¸‹æ‹‰æ›´æ–°**/
 	public void setShowHeader() {
 		mListView.showRefresh = true;
 	}
 
-	/**Òş²Øµ×²¿ ½ûÓÃÉÏÀ­¸ü¶à**/
+	/**éšè—åº•éƒ¨ ç¦ç”¨ä¸Šæ‹‰æ›´å¤š**/
 	public void setHideFooter() {
 		mFooterView.setVisibility(View.GONE);
 		mFooterTextView.setVisibility(View.GONE);
@@ -289,7 +288,7 @@ public class PullDownView extends LinearLayout implements OnScrollOverListener {
 	}
 	
 	
-	/**ÏÔÊ¾µ×²¿ Ê¹ÓÃÉÏÀ­¸ü¶à**/
+	/**æ˜¾ç¤ºåº•éƒ¨ ä½¿ç”¨ä¸Šæ‹‰æ›´å¤š**/
 	public void setShowFooter() {
 		mFooterView.setVisibility(View.VISIBLE);
 		mFooterTextView.setVisibility(View.VISIBLE);

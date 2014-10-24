@@ -1,5 +1,4 @@
 package com.jov.vae.net;
-
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.RejectedExecutionHandler;
@@ -9,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * ÎÒÃÇÍøÂçÇëÇóÏß³Ì³Ø:ÏŞÖÆ²¢ĞĞµÄÍøÂçÇëÇóÏß³Ì¡£
+ * æˆ‘ä»¬ç½‘ç»œè¯·æ±‚çº¿ç¨‹æ± :é™åˆ¶å¹¶è¡Œçš„ç½‘ç»œè¯·æ±‚çº¿ç¨‹ã€‚
  * */
 
 public class ThreadPoolUtils {
@@ -17,23 +16,23 @@ public class ThreadPoolUtils {
 	private ThreadPoolUtils() {
 	}
 
-	// ¶¨ÒåºËĞÄÏß³ÌÊı£¬²¢ĞĞÏß³ÌÊı
+	// å®šä¹‰æ ¸å¿ƒçº¿ç¨‹æ•°ï¼Œå¹¶è¡Œçº¿ç¨‹æ•°
 	private static int CORE_POOL_SIZE = 3;
 
-	// Ïß³Ì³Ø×î´óÏß³ÌÊı£º³ıÁËÕıÔÚÔËĞĞµÄÏß³Ì¶îÍâ±£´æ¶àÉÙ¸öÏß³Ì
+	// çº¿ç¨‹æ± æœ€å¤§çº¿ç¨‹æ•°ï¼šé™¤äº†æ­£åœ¨è¿è¡Œçš„çº¿ç¨‹é¢å¤–ä¿å­˜å¤šå°‘ä¸ªçº¿ç¨‹
 	private static int MAX_POOL_SIZE = 200;
 
-	// ¶îÍâÏß³Ì¿ÕÏĞ×´Ì¬Éú´æÊ±¼ä
+	// é¢å¤–çº¿ç¨‹ç©ºé—²çŠ¶æ€ç”Ÿå­˜æ—¶é—´
 	private static int KEEP_ALIVE_TIME = 5000;
 
-	// ×èÈû¶ÓÁĞ¡£µ±ºËĞÄÏß³Ì¶ÓÁĞÂúÁË·ÅÈëµÄ
-	// ³õÊ¼»¯Ò»¸ö´óĞ¡Îª10µÄ·ºĞÍÎªRunnableµÄ¶ÓÁĞ
+	// é˜»å¡é˜Ÿåˆ—ã€‚å½“æ ¸å¿ƒçº¿ç¨‹é˜Ÿåˆ—æ»¡äº†æ”¾å…¥çš„
+	// åˆå§‹åŒ–ä¸€ä¸ªå¤§å°ä¸º10çš„æ³›å‹ä¸ºRunnableçš„é˜Ÿåˆ—
 	private static BlockingQueue<Runnable> workQueue = new ArrayBlockingQueue<Runnable>(
 			10);
-	// Ïß³Ì¹¤³§,°Ñ´«µİ½øÀ´µÄrunnable¶ÔÏóÉú³ÉÒ»¸öThread
+	// çº¿ç¨‹å·¥å‚,æŠŠä¼ é€’è¿›æ¥çš„runnableå¯¹è±¡ç”Ÿæˆä¸€ä¸ªThread
 	private static ThreadFactory threadFactory = new ThreadFactory() {
 
-		// Ô­×ÓĞÍµÄinteger±äÁ¿Éú³ÉµÄintegerÖµ²»»áÖØ¸´
+		// åŸå­å‹çš„integerå˜é‡ç”Ÿæˆçš„integerå€¼ä¸ä¼šé‡å¤
 		private final AtomicInteger ineger = new AtomicInteger();
 
 		@Override
@@ -43,17 +42,17 @@ public class ThreadPoolUtils {
 		}
 	};
 
-	// µ±Ïß³Ì³Ø·¢ÉúÒì³£µÄÊ±ºò»Øµ÷½øÈë
+	// å½“çº¿ç¨‹æ± å‘ç”Ÿå¼‚å¸¸çš„æ—¶å€™å›è°ƒè¿›å…¥
 	private static RejectedExecutionHandler handler = new RejectedExecutionHandler() {
 		@Override
 		public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
-			// ½øĞĞÖØÆô²Ù×÷
+			// è¿›è¡Œé‡å¯æ“ä½œ
 		}
 
 	};
-	// Ïß³Ì³ØThreadPoolExecutor java×Ô´øµÄÏß³Ì³Ø
+	// çº¿ç¨‹æ± ThreadPoolExecutor javaè‡ªå¸¦çš„çº¿ç¨‹æ± 
 	private static ThreadPoolExecutor threadpool;
-	// ¾²Ì¬´úÂë¿é£¬ÔÚÀà±»¼ÓÔØµÄÊ±ºò½øÈë
+	// é™æ€ä»£ç å—ï¼Œåœ¨ç±»è¢«åŠ è½½çš„æ—¶å€™è¿›å…¥
 	static {
 		threadpool = new ThreadPoolExecutor(CORE_POOL_SIZE, MAX_POOL_SIZE,
 				KEEP_ALIVE_TIME, TimeUnit.SECONDS, workQueue, threadFactory,
